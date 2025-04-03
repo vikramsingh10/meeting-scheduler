@@ -1,0 +1,12 @@
+html body {
+    font-family: Arial, sans-serif;
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    width: 100%;
+    overflow-x: hidden;
+  /* overflow-y: hidden; */
+  background-color: #EFF0EC;
+  }
+  
+  

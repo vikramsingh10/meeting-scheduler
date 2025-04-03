@@ -1,0 +1,30 @@
+Main App container
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f8f8f8;
+}
+
+/* Main content area */
+.main-content {
+  display: flex;
+  flex: 1;
+  /* overflow: hidden; */
+}
+
+/* Sidebar takes 20% width, rest is page content */
+.sidebar {
+  width: 20%;
+  background: #2c3e50;
+  color: white;
+  min-height: 100vh;
+  transition: 0.3s ease-in-out;
+}
+
+.page-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: #ffffff;
+}

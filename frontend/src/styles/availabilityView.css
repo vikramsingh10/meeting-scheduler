@@ -1,0 +1,58 @@
+.availability-view {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .availability-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .availability-empty {
+    text-align: center;
+    font-size: 16px;
+    color: #777;
+  }
+  
+  .availability-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .availability-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+  }
+  
+  .availability-text {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .availability-remove-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .availability-remove-btn:hover {
+    background-color: #d63030;
+  }
+  
