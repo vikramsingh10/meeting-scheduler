@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import EventService from "../context/eventService";
 import "../styles/EventManagement.css";
+import EventCard from "../components/EventCard";
+import EventForm from "../components/EventForm"; // Make sure you have this
 
-const EventManagement = ({ userId }) => {
+const EventManagement = ({ userId, triggerCreate, onFormShown }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [newEvent, setNewEvent] = useState({ title: "", date: "", link: "" });
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const userEvents = await EventService.getUserEvents(userId);
+        const userEvents = await EventService.getEvents();
         setEvents(userEvents);
       } catch (err) {
         setError("Failed to load events.");
@@ -21,12 +24,20 @@ const EventManagement = ({ userId }) => {
     };
 
     fetchEvents();
-  }, [userId]);
+  }, []);
+
+  // Handle external trigger from dashboard
+  useEffect(() => {
+    if (triggerCreate) {
+      setShowForm(true);
+      onFormShown?.(); // Reset trigger in parent
+    }
+  }, [triggerCreate]);
 
   const handleDelete = async (eventId) => {
     try {
       await EventService.deleteEvent(eventId);
-      setEvents(events.filter(event => event._id !== eventId));
+      setEvents(events.filter((event) => event._id !== eventId));
     } catch (error) {
       setError("Failed to delete event.");
     }
@@ -57,42 +68,48 @@ const EventManagement = ({ userId }) => {
         <p className="error-message">{error}</p>
       ) : (
         <>
-          <div className="create-event">
-            <h3>Create New Event</h3>
-            <input
-              type="text"
-              placeholder="Event Title"
-              value={newEvent.title}
-              onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
-            />
-            <input
-              type="datetime-local"
-              value={newEvent.date}
-              onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
-            />
-            <input
-              type="text"
-              placeholder="Meeting Link"
-              value={newEvent.link}
-              onChange={(e) => setNewEvent({ ...newEvent, link: e.target.value })}
-            />
-            <button onClick={handleCreateEvent} className="create-button">Create Event</button>
+          <div className="event-management-header">
+            <h2>Event Types</h2>
+            <button
+              className="add-event-btn"
+              onClick={() => setShowForm(!showForm)}>
+              + Add New Event
+            </button>
           </div>
+
+          {showForm && (
+            <EventForm
+              onSubmit={async (formData) => {
+                try {
+                  const eventData = {
+                    title: formData.eventTitle,
+                    date: formData.eventDate,
+                    startTime: formData.startTime,
+                    endTime: formData.endTime,
+                    meetingLink: formData.eventLink,
+                    userId,
+                  };
+                  const created = await EventService.createEvent(eventData);
+                  setEvents([...events, created]);
+                  setShowForm(false);
+                  setError("");
+                } catch (error) {
+                  setError("Failed to create event.");
+                }
+              }}
+            />
+          )}
 
           <div className="event-list">
             <h3>Your Events</h3>
             {events.length === 0 ? (
               <p>No events found.</p>
             ) : (
-              <ul>
+              <div className="event-grid">
                 {events.map((event) => (
-                  <li key={event._id} className="event-item">
-                    <span>{event.title} - {new Date(event.date).toLocaleString()}</span>
-                    <a href={event.link} target="_blank" rel="noopener noreferrer" className="event-link">Join</a>
-                    <button onClick={() => handleDelete(event._id)} className="delete-button">Delete</button>
-                  </li>
+                  <EventCard key={event._id} event={event} />
                 ))}
-              </ul>
+              </div>
             )}
           </div>
         </>

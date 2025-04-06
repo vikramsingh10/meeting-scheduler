@@ -48,19 +48,19 @@
 
 .nav-link:hover,
 .nav-link.active {
-  background: #007bff;
+  background: #676767;
   color: white;
 }
 
 .create-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
+  background-color: white;
+  color: #1877F2;
+  border: 1px solid #1877F2;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 20px;
   cursor: pointer;
   text-align: center;
-  width: 100%;
+  width: 50%;
   margin-top: auto;
 }
 

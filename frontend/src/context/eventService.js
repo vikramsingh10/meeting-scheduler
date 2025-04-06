@@ -4,18 +4,14 @@ const API_URL = "http://localhost:5001/api/events"; // Replace with actual backe
 
 const EventService = {
   // Fetch all events for a user
-  getEvents: async (userId) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${API_URL}/user/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching events:", error);
-      throw error;
-    }
+  getEvents: async () => {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${API_URL}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
   },
+  
 
   // Fetch event by ID
   getEventById: async (eventId) => {
