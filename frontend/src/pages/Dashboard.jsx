@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-// import { Link } from "react-router-dom";
 import "../styles/Dashboard.css";
-// import logo from "../assets/CNNCLogo.png";
 import EventsPage from "./EventManagement";
 import BookingPage from "./Booking";
 import AvailabilityPage from "./Availability";
@@ -9,12 +7,24 @@ import SettingsPage from "./Settings";
 
 const Dashboard = ({ user }) => {
   const [activeTab, setActiveTab] = useState("events");
+  const [triggerCreateEvent, setTriggerCreateEvent] = useState(false);
 
-  // Function to render the selected component
+  const handleCreateClick = () => {
+    if (activeTab === "events") {
+      setTriggerCreateEvent(true);
+    }
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case "events":
-        return <EventsPage />;
+        return (
+          <EventsPage
+            userId={user?._id}
+            triggerCreate={triggerCreateEvent}
+            onFormShown={() => setTriggerCreateEvent(false)} // Reset trigger
+          />
+        );
       case "booking":
         return <BookingPage />;
       case "availability":
@@ -37,24 +47,41 @@ const Dashboard = ({ user }) => {
 
         {/* Navigation Links */}
         <nav className="sidebar-nav">
-          <button className={`nav-link ${activeTab === "events" ? "active" : ""}`} onClick={() => setActiveTab("events")}>
+          <button
+            className={`nav-link ${activeTab === "events" ? "active" : ""}`}
+            onClick={() => {
+              setActiveTab("events");
+              setTriggerCreateEvent(false);
+            }}>
             📅 Events
           </button>
-          <button className={`nav-link ${activeTab === "booking" ? "active" : ""}`} onClick={() => setActiveTab("booking")}>
+          <button
+            className={`nav-link ${activeTab === "booking" ? "active" : ""}`}
+            onClick={() => setActiveTab("booking")}>
             📖 Booking
           </button>
-          <button className={`nav-link ${activeTab === "availability" ? "active" : ""}`} onClick={() => setActiveTab("availability")}>
+          <button
+            className={`nav-link ${
+              activeTab === "availability" ? "active" : ""
+            }`}
+            onClick={() => setActiveTab("availability")}>
             ✅ Availability
           </button>
-          <button className={`nav-link ${activeTab === "settings" ? "active" : ""}`} onClick={() => setActiveTab("settings")}>
+          <button
+            className={`nav-link ${activeTab === "settings" ? "active" : ""}`}
+            onClick={() => setActiveTab("settings")}>
             ⚙️ Settings
           </button>
         </nav>
 
-        {/* Create Button */}
-        <button className="create-btn">+ Create</button>
+        {/* Create Button — Visible only in Events tab */}
+        {activeTab === "events" && (
+          <button className="create-btn" onClick={handleCreateClick}>
+            + Create
+          </button>
+        )}
 
-        {/* Logged-in User */}
+        {/* User Info */}
         {user && (
           <div className="user-info">
             <span className="user-avatar">{user.name[0]}</span>
@@ -64,9 +91,7 @@ const Dashboard = ({ user }) => {
       </div>
 
       {/* Main Content Area */}
-      <div className="dashboard-main-content">
-        {renderContent()}
-      </div>
+      <div className="dashboard-main-content">{renderContent()}</div>
     </div>
   );
 };

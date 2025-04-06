@@ -31,17 +31,16 @@ const Login = () => {
     // }
     try {
       const response = await login(email, password);
-      
-      if (response?.token) {
+      if (response?.success) {
         navigate("/dashboard");
       } else {
         // setError("Invalid email or password.");
-        Notification("error", "Invalid email or password.")
+        Notification("error", "Invalid email or password.");
       }
     } catch (err) {
       // setError("Invalid email or password.");
-      Notification("error", "Invalid email or password.")
-    }    
+      Notification("error", "Invalid email or password.");
+    }
   };
 
   return (
@@ -84,14 +83,15 @@ const Login = () => {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
-            <button type="submit" className="login-button" >
+            <button type="submit" className="login-button">
               Log in
             </button>
           </form>
-          <p className="signup-link" style={{
-            marginTop:"80px",
-            
-          }}>
+          <p
+            className="signup-link"
+            style={{
+              marginTop: "80px",
+            }}>
             Don't have an account? <a href="/signup">Sign Up</a>
           </p>
         </div>
@@ -104,7 +104,11 @@ const Login = () => {
             fontSize: "12px",
           }}>
           This site is protected by reCAPTCHA and the{" "}
-          <span style={{textDecoration:"underline"}}>Google Privacy Policy</span> and <span style={{textDecoration:"underline"}}>Terms of Service</span>{" "}
+          <span style={{ textDecoration: "underline" }}>
+            Google Privacy Policy
+          </span>{" "}
+          and{" "}
+          <span style={{ textDecoration: "underline" }}>Terms of Service</span>{" "}
           apply.
         </p>
       </div>
